@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import InputField from "./components/InputField";
+import { ObjectType } from "./Modal";
+import TodoList from "./components/TodoList";
 
 const App: React.FC = () => {
-  console.log("something");
-  type C = {
-    baba: string;
-    wawa: number;
-  };
+  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<ObjectType[]>([]);
 
-  let c: C = {
-    baba: "baba",
-    wawa: 23,
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (todo) {
+      setTodos([...todos, { id: Date.now(), todo: todo, isDone: false }]);
+      setTodo("");
+    }
   };
+  console.log(todos);
 
-  console.log(c);
   return (
     <div className="App">
       <span className="heading">Taskify</span>
+      <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+      <TodoList todos={todos} setTodos={setTodos} />
     </div>
   );
 };
